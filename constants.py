@@ -154,3 +154,17 @@ ABT_SILVER_COLUMN_COMMENTS = {
     "merchant_country": "País onde o restaurante está localizado.",
     "restaurant_profile": "Perfil do restaurante."
 }
+
+USER_METRICS_GOLD_COLUMN_COMMENTS = {
+    "customer_id": "Identificador único do usuário.",
+    "is_target": "Se pertence ao grupo alvo ou não. True para target e False para controle.",
+    "orders_per_user": "Número de pedidos por usuário.",
+    "total_spent_per_user": "Valor total gasto por usuário.",
+    "total_items": "Quantidade total de itens.",
+    "total_discount": "Total de desconto nos itens.",
+    "days_since_signup": "Total de dias desde o cadastro do cliente até o inicio da campanha em 01/01/2019 (data do primeiro pedido).",
+    "avg_ticket_per_user": "Ticket médio por pedido.",
+    "avg_items_per_order": "Média de itens por pedido.",
+    "avg_discount_per_order": "Média do desconto por pedido.",
+    "is_retained": "Retenção durante o período da campanha."
+}
