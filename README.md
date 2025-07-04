@@ -24,7 +24,7 @@ Este projeto apresenta uma análise robusta de um teste A/B conduzido com dados 
 ## ⚙️ Tecnologias Utilizadas
 
 - Apache Spark (PySpark)
-- Databricks
+- Databricks ([Serverless environment version 2](https://docs.databricks.com/aws/en/release-notes/serverless/environment-version/two))
 - Python 3.9+
 - Pandas, Matplotlib, Seaborn (para visualizações locais)
 - Scipy/Statsmodels (para testes estatísticos)
