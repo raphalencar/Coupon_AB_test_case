@@ -32,15 +32,78 @@ Este projeto apresenta uma análise robusta de um teste A/B conduzido com dados 
 ---
 
 ## 📁 Estrutura do Projeto
+```
 .
 ├── notebooks/
 │ ├── 01_data_acquisition.ipynb
 │ ├── 02_data_cleasing.ipynb
 │ ├── 03_campaign_impact_analysis.ipynb
 │ ├── 04_customer_segmentation.ipynb
+├── __init__.py
 ├── constants.py
 ├── schemas.py
 ├── utils.py
 ├── README.md
 └── requirements.txt
+```
 
+---
+
+## 🧪 Como Rodar
+
+1. Clone o repositório:
+```bash
+https://github.com/raphalencar/Coupon_AB_test_case
+```
+2. Instale as dependências (ambiente local):
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Abra no Databricks ou Jupyter para rodar os notebooks em sequência.
+
+--- 
+
+## 📈 Principais KPIs Calculados
+`orders_per_user` → Pedidos por usuário
+
+`total_spent_per_user` → Total gasto por usuário
+
+`avg_ticket_per_user` → Ticket médio
+
+`avg_items_per_order` → Itens por pedido
+
+`is_retained` → Flag de retenção (usuário fez mais de 1 pedido)
+
+---
+
+## 🔬 Testes Estatísticos
+* `T-Test` para métricas contínuas
+
+* `Qui-Quadrado` para segmentações categóricas
+
+* Verificação de normalidade (`Shapiro-Wilk`)
+
+---
+
+## 📌 Conclusões
+* A campanha teve impacto significativo em gasto, pedidos e retenção.
+
+* O efeito foi robusto em todos os segmentos de valor e perfil de consumo.
+
+--- 
+
+## 💡 Recomendações Estratégicas
+* Escalar campanha para usuários com ticket baixo/médio
+
+* Ofertas agressivas para reativar usuários inativos
+
+* Personalização por tipo de restaurante
+
+* Padronizar estrutura de testes A/B com automação
+
+* Aplicar clusterização comportamental
+
+## 👤 Autor
+Raphael Alencar – Data Analyst
