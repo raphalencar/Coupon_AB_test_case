@@ -39,6 +39,9 @@ Este projeto apresenta uma análise robusta de um teste A/B conduzido com dados 
 │ ├── 02_data_cleasing.ipynb
 │ ├── 03_campaign_impact_analysis.ipynb
 │ ├── 04_customer_segmentation.ipynb
+├── relatorios/
+│ ├── relatorio_negocio.html
+│ ├── relatorio_negocio.pdf
 ├── __init__.py
 ├── constants.py
 ├── schemas.py
@@ -104,6 +107,9 @@ pip install -r requirements.txt
 * Padronizar estrutura de testes A/B com automação
 
 * Aplicar clusterização comportamental
+
+## Relatório de negócio
+O relatório para o time de negócio está disponível em dois formatos, html e pdf. A versão em html está com um design mais organizado e a versão em pdf foi gerada a partir dela. Recomendo availar pela versão html!
 
 ## 👤 Autor
 Raphael Alencar – Data Analyst
