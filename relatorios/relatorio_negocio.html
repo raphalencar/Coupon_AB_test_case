@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Teste A/B - Campanha de Cupons iFood</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFBF8; }
+        .ifood-red { color: #EA1D2C; }
+        .ifood-bg-red { background-color: #EA1D2C; }
+        .ifood-border-red { border-color: #EA1D2C; }
+        .positive-green { color: #16A34A; } /* Cor verde para ganhos */
+        .kpi-card { background-color: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #F0F0F0; }
+        .kpi-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .filter-btn { transition: all 0.2s ease; border: 1px solid #E0E0E0; }
+        .filter-btn.active { background-color: #EA1D2C; color: white; border-color: #EA1D2C; }
+        .filter-btn:not(.active):hover { background-color: #F3F4F6; }
+        .section-title { font-size: 1.875rem; font-weight: 700; color: #333; margin-bottom: 1.5rem; text-align: left; padding-bottom: 0.75rem; border-bottom: 2px solid #F0F0F0; }
+        .table-header { background-color: #F9FAFB; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white py-6 shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-center">
+                Análise de Teste A/B: <span class="ifood-red">Campanha de Cupons</span>
+            </h1>
+            <p class="text-center text-gray-500 mt-1">Resultados e Recomendações Estratégicas</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+
+        <!-- Seção 1: Sumário Executivo -->
+        <section id="summary" class="mb-16">
+            <h2 class="section-title">Sumário Executivo</h2>
+            <div class="text-left text-gray-600 mb-10 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <p class="mb-4">Este report apresenta os resultados de um experimento A/B conduzido para avaliar o impacto de uma campanha de cupons no iFood. A análise demonstrou que a campanha teve impacto positivo e estatisticamente significativo em KPIs como gasto total por usuário, número de pedidos e retenção. A resposta foi consistente entre diferentes segmentos, com destaque para os usuários de ticket médio e alto.</p>
+                <p class="mb-2"><strong>Recomendação principal:</strong> Expandir a campanha com cupons personalizados por perfil de usuário, acompanhada de melhorias no processo de testes e targeting.</p>
+                <p><strong>Impacto estimado:</strong> Aumento de Gross Merchandise Value, redução de custos promocionais e maior retenção de clientes.</p>
+            </div>
+        </section>
+
+        <!-- Seção 2: Contexto e Objetivos -->
+        <section id="context" class="mb-16">
+            <h2 class="section-title">Contexto e Objetivos</h2>
+            <div class="text-left text-gray-700 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <p class="mb-4">O iFood conduziu uma campanha promocional com cupons visando aumentar o volume de pedidos, o gasto por usuário e melhorar a retenção de clientes. Este projeto analisa os resultados do teste A/B, buscando responder:</p>
+                <ul class="space-y-3 list-disc list-inside">
+                    <li>O cupom gerou aumento no gasto e nos pedidos?</li>
+                    <li>A campanha teve impacto significativo em diferentes perfis de usuários?</li>
+                    <li>Como otimizar futuras campanhas com base nesses resultados?</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Seção 3: Principais KPIs -->
+        <section id="kpis" class="mb-16">
+             <h2 class="section-title">Principais Indicadores de Performance (KPIs)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                <div class="kpi-card">
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">📈</span>
+                        <h3 class="text-xl font-semibold text-gray-700">Pedidos por Usuário</h3>
+                    </div>
+                    <p class="text-4xl font-bold mt-4 positive-green">+13,3%</p>
+                    <p class="text-gray-500 mt-2">Grupo com cupom fez mais pedidos por usuário.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">💰</span>
+                        <h3 class="text-xl font-semibold text-gray-700">Gasto Total</h3>
+                    </div>
+                    <p class="text-4xl font-bold mt-4 positive-green">+13,4%</p>
+                    <p class="text-gray-500 mt-2">Usuários com cupom gastaram mais no total.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="flex items-center gap-4">
+                        <span class="text-3xl">🔄</span>
+                        <h3 class="text-xl font-semibold text-gray-700">Retenção</h3>
+                    </div>
+                    <p class="text-4xl font-bold mt-4 positive-green">+21%</p>
+                    <p class="text-gray-500 mt-2">Cupom aumentou a proporção de clientes que fizeram mais de um pedido.</p>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-gray-600 bg-gray-100 p-4 rounded-lg">
+                <p><strong>Observação:</strong> Métricas como ticket médio e itens por pedido não apresentaram diferenças significativas.</p>
+            </div>
+        </section>
+
+        <!-- Seção 4: Custo da Campanha e Retorno -->
+        <section id="financial-viability" class="mb-16">
+            <h2 class="section-title">Custo da Campanha e Retorno</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-lg mb-4">KPIs Financeiros Chave</h3>
+                    <table class="w-full text-left text-sm">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-3 font-semibold">Indicador</th>
+                                <th class="p-3 font-semibold text-center">Controle</th>
+                                <th class="p-3 font-semibold text-center">Target</th>
+                                <th class="p-3 font-semibold text-center">Diferença (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="p-3">Usuários no grupo</td>
+                                <td class="p-3 text-center">360.541</td>
+                                <td class="p-3 text-center">445.924</td>
+                                <td class="p-3 text-center text-gray-400">—</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">Gasto médio por usuário</td>
+                                <td class="p-3 text-center">R$ 126,95</td>
+                                <td class="p-3 text-center">R$ 143,89</td>
+                                <td class="p-3 text-center font-bold positive-green">+13,35%</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3">Retenção (>1 pedido)</td>
+                                <td class="p-3 text-center">47,6%</td>
+                                <td class="p-3 text-center">57,6%</td>
+                                <td class="p-3 text-center font-bold positive-green">+10 p.p.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="font-bold text-lg mb-4">Premissas Adotadas</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-500 mt-1">✓</span>
+                            <div><strong>Valor do Cupom:</strong> R$ 10,00 (assumido para o cálculo de custo).</div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-green-500 mt-1">✓</span>
+                            <div><strong>Custo Máximo:</strong> Assumimos o pior cenário onde todos os usuários do grupo Target usaram o cupom.</div>
+                        </li>
+                         <li class="flex items-start gap-3">
+                            <span class="text-green-500 mt-1">✓</span>
+                            <div><strong>Causalidade:</strong> O "lift" de R$ 16,94 no gasto por usuário é atribuído diretamente ao efeito da campanha.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 bg-gray-800 text-white p-6 rounded-lg shadow-lg">
+                <h3 class="font-bold text-xl mb-4 text-center">Resultado Financeiro da Campanha</h3>
+                <div class="flex flex-col md:flex-row justify-around items-center gap-6">
+                    <div class="text-center">
+                        <p class="text-sm text-gray-400 mb-1">Retorno Total Gerado</p>
+                        <p class="text-3xl font-bold positive-green">R$ 7.555.031</p>
+                    </div>
+                    <div class="text-2xl font-light text-gray-500">-</div>
+                     <div class="text-center">
+                        <p class="text-sm text-gray-400 mb-1">Custo Total (Estimado)</p>
+                        <p class="text-3xl font-bold ifood-red">R$ 4.459.240</p>
+                    </div>
+                    <div class="text-2xl font-light text-gray-500">=</div>
+                     <div class="text-center p-4 bg-green-900/50 rounded-lg">
+                        <p class="text-sm text-green-200 mb-1">Lucro Líquido & ROI</p>
+                        <p class="text-3xl font-bold text-white">R$ 3.095.791</p>
+                        <p class="text-lg font-semibold positive-green">(ROI de 69,42%)</p>
+                    </div>
+                </div>
+                <hr class="my-4 border-gray-600">
+                <div class="flex justify-center items-center gap-6">
+                    <p class="text-gray-300">Lucro por Usuário (Lift - Custo):</p>
+                    <p class="text-2xl font-semibold positive-green">R$ 16,94</p>
+                    <p class="text-gray-400">-</p>
+                    <p class="text-2xl font-semibold ifood-red">R$ 10,00</p>
+                    <p class="text-gray-400">=</p>
+                    <p class="text-2xl font-bold positive-green">R$ 6,94</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção 5: Análise Detalhada por Segmento -->
+        <section id="segmentation" class="mb-16">
+            <h2 class="section-title">Análise Detalhada por Segmento</h2>
+            <div class="space-y-12">
+                
+                <!-- Segmento 1: Frequência de Pedidos -->
+                <div>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">1. Análise por Frequência de Pedidos</h3>
+                    <p class="text-gray-600 mb-4">Indica engajamento prévio. O cupom pode ter mais impacto em quem pede pouco.</p>
+                     <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-gray-700">KPI: Gasto Total por Usuário</h4>
+                            <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="table-header">
+                                        <tr>
+                                            <th class="p-3 font-semibold">Segmento</th>
+                                            <th class="p-3 font-semibold text-center">Gasto Médio (Target)</th>
+                                            <th class="p-3 font-semibold text-center">Gasto Médio (Controle)</th>
+                                            <th class="p-3 font-semibold text-center">Diferença (%)</th>
+                                            <th class="p-3 font-semibold text-center">Significativo?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alta Frequência (4+)</td><td class="p-3 text-center">R$ 408,36</td><td class="p-3 text-center">R$ 407,61</td><td class="p-3 text-center font-medium positive-green">+0.2%</td><td class="p-3 text-center font-bold text-red-500">❌</td></tr>
+                                        <tr><td class="p-3 font-medium">Média Frequência (2-3)</td><td class="p-3 text-center">R$ 120,25</td><td class="p-3 text-center">R$ 120,45</td><td class="p-3 text-center font-medium text-red-500">-0.2%</td><td class="p-3 text-center font-bold text-red-500">❌</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixa Frequência (1)</td><td class="p-3 text-center">R$ 45,26</td><td class="p-3 text-center">R$ 45,22</td><td class="p-3 text-center font-medium positive-green">+0.1%</td><td class="p-3 text-center font-bold text-red-500">❌</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mt-4">KPI: Pedidos por Usuário</h4>
+                             <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                     <thead class="table-header">
+                                        <tr><th class="p-3 font-semibold">Segmento</th><th class="p-3 font-semibold text-center">Pedidos Médio (Target)</th><th class="p-3 font-semibold text-center">Pedidos Médio (Controle)</th><th class="p-3 font-semibold text-center">Diferença (%)</th><th class="p-3 font-semibold text-center">Significativo?</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alta Frequência (4+)</td><td class="p-3 text-center">9.02</td><td class="p-3 text-center">9.00</td><td class="p-3 text-center font-medium positive-green">+0.2%</td><td class="p-3 text-center font-bold text-red-500">❌</td></tr>
+                                        <tr><td class="p-3 font-medium">Média Frequência (2-3)</td><td class="p-3 text-center">2.65</td><td class="p-3 text-center">2.66</td><td class="p-3 text-center font-medium text-red-500">-0.1%</td><td class="p-3 text-center font-bold text-red-500">❌</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixa Frequência (1)</td><td class="p-3 text-center">1.00</td><td class="p-3 text-center">1.00</td><td class="p-3 text-center font-medium">+0.0%</td><td class="p-3 text-center font-bold text-red-500">❌</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                     </div>
+                    <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p class="font-semibold text-blue-800">Insight Chave</p>
+                        <p class="text-blue-700">O principal efeito da campanha não foi aumentar o gasto ou a frequência <strong>dentro</strong> de cada segmento, mas sim <strong>migrar usuários de segmentos de baixa frequência para segmentos de média e alta frequência</strong>, aumentando a retenção geral.</p>
+                    </div>
+                </div>
+
+                <!-- Segmento 2: Ticket Médio -->
+                <div class="mt-12">
+                     <h3 class="text-xl font-semibold mb-2 text-gray-800">2. Análise por Segmento de Ticket Médio</h3>
+                     <p class="text-gray-600 mb-4">Mede a propensão do usuário a gastar mais por pedido — pode reagir de forma diferente ao cupom.</p>
+                     <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-gray-700">KPI: Gasto Total por Usuário</h4>
+                            <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="table-header">
+                                        <tr>
+                                            <th class="p-3 font-semibold">Segmento</th>
+                                            <th class="p-3 font-semibold text-center">Gasto Médio (Target)</th>
+                                            <th class="p-3 font-semibold text-center">Gasto Médio (Controle)</th>
+                                            <th class="p-3 font-semibold text-center">Diferença (%)</th>
+                                            <th class="p-3 font-semibold text-center">Significativo?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alto Ticket</td><td class="p-3 text-center">R$ 234,31</td><td class="p-3 text-center">R$ 208,17</td><td class="p-3 text-center font-bold positive-green">+12.6%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Ticket Médio</td><td class="p-3 text-center">R$ 166,94</td><td class="p-3 text-center">R$ 148,27</td><td class="p-3 text-center font-bold positive-green">+12.6%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixo Ticket</td><td class="p-3 text-center">R$ 89,29</td><td class="p-3 text-center">R$ 78,10</td><td class="p-3 text-center font-bold positive-green">+14.3%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mt-4">KPI: Pedidos por Usuário</h4>
+                             <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                     <thead class="table-header">
+                                        <tr><th class="p-3 font-semibold">Segmento</th><th class="p-3 font-semibold text-center">Pedidos Médio (Target)</th><th class="p-3 font-semibold text-center">Pedidos Médio (Controle)</th><th class="p-3 font-semibold text-center">Diferença (%)</th><th class="p-3 font-semibold text-center">Significativo?</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alto Ticket</td><td class="p-3 text-center">3.07</td><td class="p-3 text-center">2.71</td><td class="p-3 text-center font-bold positive-green">+13.3%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Ticket Médio</td><td class="p-3 text-center">3.42</td><td class="p-3 text-center">3.04</td><td class="p-3 text-center font-bold positive-green">+12.7%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixo Ticket</td><td class="p-3 text-center">3.06</td><td class="p-3 text-center">2.69</td><td class="p-3 text-center font-bold positive-green">+13.7%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mt-4">KPI: Retenção</h4>
+                             <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="table-header">
+                                        <tr><th class="p-3 font-semibold">Segmento</th><th class="p-3 font-semibold text-center">Retenção (Target)</th><th class="p-3 font-semibold text-center">Retenção (Controle)</th><th class="p-3 font-semibold text-center">Diferença (%)</th><th class="p-3 font-semibold text-center">Significativo?</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alto Ticket</td><td class="p-3 text-center">56.9%</td><td class="p-3 text-center">46.7%</td><td class="p-3 text-center font-bold positive-green">+21.8%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Ticket Médio</td><td class="p-3 text-center">61.4%</td><td class="p-3 text-center">52.0%</td><td class="p-3 text-center font-bold positive-green">+18.2%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixo Ticket</td><td class="p-3 text-center">55.5%</td><td class="p-3 text-center">45.3%</td><td class="p-3 text-center font-bold positive-green">+22.5%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                     </div>
+                    <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p class="font-semibold text-blue-800">Insight Chave</p>
+                        <p class="text-blue-700">A campanha de cupons demonstrou uma <strong>eficácia notavelmente consistente e positiva em todos os segmentos de ticket médio</strong>. Usuários de baixo, médio e alto ticket responderam positivamente ao cupom, aumentando seu gasto, frequência e retenção de forma significativa. Isso indica que a estratégia de cupons é robusta e não se limita a um único perfil de gasto.</p>
+                    </div>
+                </div>
+                
+                <!-- Segmento 3: Perfil do Restaurante -->
+                <div class="mt-12">
+                     <h3 class="text-xl font-semibold mb-2 text-gray-800">3. Análise por Perfil do Restaurante</h3>
+                     <p class="text-gray-600 mb-4">Identifica o tipo de restaurante que o usuário consome — restaurantes baratos ou premium.</p>
+                     <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-gray-700">KPI: Gasto Total por Usuário</h4>
+                            <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="table-header">
+                                        <tr><th class="p-3 font-semibold">Perfil</th><th class="p-3 font-semibold text-center">Gasto Médio (Target)</th><th class="p-3 font-semibold text-center">Gasto Médio (Controle)</th><th class="p-3 font-semibold text-center">Diferença (%)</th><th class="p-3 font-semibold text-center">Significativo?</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alto Valor</td><td class="p-3 text-center">R$ 156,54</td><td class="p-3 text-center">R$ 138,39</td><td class="p-3 text-center font-bold positive-green">+13.1%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixo Valor</td><td class="p-3 text-center">R$ 121,81</td><td class="p-3 text-center">R$ 107,03</td><td class="p-3 text-center font-bold positive-green">+13.8%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Valor Intermediário</td><td class="p-3 text-center">R$ 125,67</td><td class="p-3 text-center">R$ 110,28</td><td class="p-3 text-center font-bold positive-green">+14.0%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mt-4">KPI: Pedidos por Usuário</h4>
+                             <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                     <thead class="table-header">
+                                        <tr><th class="p-3 font-semibold">Perfil</th><th class="p-3 font-semibold text-center">Pedidos Médio (Target)</th><th class="p-3 font-semibold text-center">Pedidos Médio (Controle)</th><th class="p-3 font-semibold text-center">Diferença (%)</th><th class="p-3 font-semibold text-center">Significativo?</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alto Valor</td><td class="p-3 text-center">3.12</td><td class="p-3 text-center">2.76</td><td class="p-3 text-center font-bold positive-green">+13.2%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixo Valor</td><td class="p-3 text-center">3.32</td><td class="p-3 text-center">2.92</td><td class="p-3 text-center font-bold positive-green">+13.6%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Valor Intermediário</td><td class="p-3 text-center">3.22</td><td class="p-3 text-center">2.84</td><td class="p-3 text-center font-bold positive-green">+13.4%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mt-4">KPI: Retenção</h4>
+                             <div class="overflow-x-auto bg-white rounded-lg shadow border border-gray-100 mt-2">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="table-header">
+                                        <tr><th class="p-3 font-semibold">Perfil</th><th class="p-3 font-semibold text-center">Retenção (Target)</th><th class="p-3 font-semibold text-center">Retenção (Controle)</th><th class="p-3 font-semibold text-center">Diferença (%)</th><th class="p-3 font-semibold text-center">Significativo?</th></tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <tr><td class="p-3 font-medium">Alto Valor</td><td class="p-3 text-center">57.2%</td><td class="p-3 text-center">47.3%</td><td class="p-3 text-center font-bold positive-green">+21.0%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Baixo Valor</td><td class="p-3 text-center">58.8%</td><td class="p-3 text-center">48.5%</td><td class="p-3 text-center font-bold positive-green">+21.4%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                        <tr><td class="p-3 font-medium">Valor Intermediário</td><td class="p-3 text-center">57.8%</td><td class="p-3 text-center">47.9%</td><td class="p-3 text-center font-bold positive-green">+20.6%</td><td class="p-3 text-center font-bold positive-green">✅</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                     </div>
+                    <div class="mt-4 bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p class="font-semibold text-blue-800">Insight Chave</p>
+                        <p class="text-blue-700">A campanha de cupons se mostrou igualmente eficaz, independentemente do perfil de valor do restaurante. Isso indica que a promoção é atrativa para os clientes em toda a gama de parceiros do iFood, desde os mais acessíveis aos de maior valor, gerando "lift" em todos os cenários.</p>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Seção 6: Oportunidades de Melhoria -->
+        <section id="improvements" class="mb-16">
+            <h2 class="section-title">Oportunidades de Melhoria</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h4 class="font-bold text-lg mb-2">🎯 Targeting mais Inteligente</h4>
+                    <p class="text-gray-600">Evitar oferecer cupons para clientes que comprariam de qualquer forma (ex: usuários de alta frequência), focando o investimento em segmentos com maior potencial de mudança de comportamento.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h4 class="font-bold text-lg mb-2">🎁 Personalização da Oferta</h4>
+                    <p class="text-gray-600">Ajustar o valor ou tipo de cupom (ex: % de desconto vs. valor fixo) com base no perfil de gasto do usuário e no ticket médio dos restaurantes que ele costuma pedir.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h4 class="font-bold text-lg mb-2">⚡ Reengajamento</h4>
+                    <p class="text-gray-600">Aumentar o incentivo para usuários inativos ou de baixa frequência, onde o impacto da campanha se mostrou mais forte, para acelerar a formação do hábito de compra.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h4 class="font-bold text-lg mb-2">🔬 Otimização do Processo de Testes</h4>
+                    <p class="text-gray-600">Utilizar técnicas como randomização estratificada para garantir que os grupos de teste e controle sejam homogêneos em relação a variáveis importantes (ex: ticket médio prévio).</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Seção 7: Nova Proposta de Teste A/B -->
+        <section id="next-test" class="bg-red-50 border-t-4 ifood-border-red rounded-b-lg p-6 md:p-8 shadow-md">
+            <h2 class="section-title text-center border-none">Nova Proposta de Teste A/B</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <div>
+                    <h3 class="font-semibold text-lg text-gray-800 mb-3">🎯 Objetivo</h3>
+                    <p class="text-gray-700">Testar o impacto de cupons personalizados comparado ao modelo genérico atual.</p>
+                    
+                    <h3 class="font-semibold text-lg text-gray-800 mt-4 mb-3">🔬 Grupos</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong>Controle:</strong> Sem cupom.</li>
+                        <li><strong>Teste 1 (Genérico):</strong> Cupom de R$10 para todos.</li>
+                        <li><strong>Teste 2 (Personalizado):</strong> Cupom com valor ajustado por perfil de consumo e restaurante.</li>
+                    </ul>
+
+                    <h3 class="font-semibold text-lg text-gray-800 mt-4 mb-3">🎲 Randomização</h3>
+                    <p class="text-gray-700">Estratificada por ticket médio, frequência, localização e canal de origem para garantir grupos comparáveis.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg border">
+                     <h3 class="font-semibold text-lg text-gray-800 mb-3">📈 KPIs & Impacto Esperado</h3>
+                     <p class="text-gray-600 mb-2"><strong>KPIs primários:</strong></p>
+                     <ul class="list-disc list-inside space-y-1 text-gray-700 mb-4">
+                        <li>Pedidos por Usuário</li>
+                        <li>Gasto Total por Usuário</li>
+                        <li>Taxa de Retenção</li>
+                        <li>ROI Promocional</li>
+                     </ul>
+                     <p class="text-gray-600 mb-2"><strong>Impacto Esperado:</strong></p>
+                     <div class="space-y-2">
+                        <p class="font-medium positive-green">Aumento no GMV e retenção (+15%)</p>
+                        <p class="font-medium positive-green">Redução de custo promocional (20–30%)</p>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white mt-16 py-6">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>&copy; 2025 - Análise de Dados para iFood por Raphael Brito Alencar</p>
+            <details class="mt-4 text-gray-400 cursor-pointer">
+                <summary class="focus:outline-none">Detalhes da Metodologia</summary>
+                <div class="mt-2 text-left max-w-xl mx-auto bg-gray-700 p-4 rounded-lg">
+                    <p><strong>Fonte de Dados:</strong> Tabela `abt_final_ifood_case`.</p>
+                    <p><strong>Tratamento de Outliers:</strong> Capping (Winsorizing) no percentil 95 para a variável `order_total_amount`.</p>
+                    <p><strong>Testes Estatísticos:</strong> Teste T para médias e Qui-Quadrado para proporções, com p-valor < 0.05.</p>
+                </div>
+            </details>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reportData = {
+                all: {
+                    labels: ['Controle', 'Target'],
+                    aov: [50.8, 51.4] 
+                },
+                maturity: {
+                    labels: ['Controle (Antigos)', 'Target (Antigos)', 'Controle (Novos)', 'Target (Novos)'],
+                    aov: [49.5, 50.1, 52.0, 54.5] 
+                },
+                activity: {
+                    labels: ['Controle (Ativos)', 'Target (Ativos)', 'Controle (Inativos)', 'Target (Inativos)'],
+                    aov: [51.0, 51.5, 48.0, 50.5] 
+                },
+                restaurant: {
+                    labels: ['Controle (Econômico)', 'Target (Econômico)', 'Controle (Médio)', 'Target (Médio)', 'Controle (Caro)', 'Target (Caro)'],
+                    aov: [45.0, 47.0, 55.0, 56.5, 65.0, 65.5]
+                }
+            };
+        });
+    </script>
+</body>
+</html>
